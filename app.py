@@ -1,131 +1,124 @@
-# Import the dependencies.
-import numpy as np
-
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+# import libraris
 import pandas as pd
 
-from flask import Flask, jsonify, render_template
-from flask_cors import CORS, cross_origin
+import numpy as np
+from flask import Flask, render_template, request
+import pickle
 
-#################################################
-# Database Setup
-#################################################
-engine = create_engine("sqlite:///NBA_stats.sqlite")
+## col names for df
+col_names = ['Age', 
+            'Poverty_Ratio', 
+            'Gender_Female', 
+            'Gender_Male',
+            'Prediabetes_no', 
+            'Prediabetes_yes', 
+            'Categorical_BMI_Healthy_Weight',
+            'Categorical_BMI_Obese', 
+            'Categorical_BMI_Overweight',
+            'Categorical_BMI_Underweight', 
+            'Education_12th_Grade_no_diploma',
+            'Education_Associates_Academic_Program',
+            'Education_Associates_Occupational_Technical_Vocational',
+            'Education_Bachelor', 
+            'Education_GED_Equivalent',
+            'Education_Grade_1-11', 
+            'Education_Greater_Than_Master',
+            'Education_High_School_Graduate', 
+            'Education_Masters',
+            'Education_Some_College_no_degree', 
+            'Race_AIAN_AND_other',
+            'Race_AIAN_Only',
+            'Race_African_American_Only', 
+            'Race_Asian_Only',
+            'Race_Other',
+            'Race_White_Only']
 
-# reflect an existing database into a new model
-Base = automap_base()
-# reflect the tables
-Base.prepare(engine, reflect=True)
 
-# Save references to each table
-Team_table= Base.classes.Team_table
-Player_score_table = Base.classes.Player_score_table
-Player_info_table = Base.classes.Player_info_table
-
-
-
-#################################################
-# Flask Setup
-#################################################
+# initialzie the flask app
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
+# load ml model
+model = pickle.load(open('model.pkl', 'rb'))
 
-#################################################
-# Flask Routes
-#################################################
-@app.route("/")
-def get_teamName():
-    session = Session(engine)  
-    res = session.query(Team_table.Team).all()
-    session.close()
+# define the app route for the default page of the web-app
+@app.route('/')
+def home():
+    return render_template('index_manny.html')
 
-    team_names = [row[0] for row in res]
-    return render_template('index.html', team_names=team_names)
+# to use the predict button in our web-app
+@app.route('/predict', methods=['POST'])
+def predict():
 
+    X = np.zeros( len(col_names) )
+    print("X",X)
+    df_XX = pd.DataFrame(data=[dict(zip(col_names, X) ) ] )
 
-# teams route
-@app.route("/teams")
-@cross_origin()
-def get_teams():
-    # Query the team table and return the results as JSON
+    # for rending result on html GUI
 
-    session = Session(engine)
-    teams = session.query(Team_table.Team, Team_table.PPG, Team_table.APG, Team_table.RPG).all()
-    session.close()
+    feat_prediabetic = f"Prediabetes_{request.form['prediabetes']}"
+    print( "Feat_prediabetic:", feat_prediabetic)
+    df_XX[ feat_prediabetic ] = 1.0
+
+    feat_weightlbs = int( request.form['weightlbs'] )
+    print( "Feat weightlbs:", feat_weightlbs)
+
+    feat_height = int ( request.form['height'] )
+    print( "Feat height:", feat_height )
+
+    bmi = 703 * ( feat_weightlbs / (feat_height * feat_height) )
+    print( "Feat bmi:", bmi )
+
+    if bmi <= 18.5:
+         df_XX['Categorical_BMI_Underweight'] = 1.0
+    elif bmi > 18.5 and bmi < 25:
+         df_XX['Categorical_BMI_Healthy_Weight'] = 1.0
+    elif bmi >= 25 and bmi < 30:
+         df_XX['Categorical_BMI_Overweight'] = 1.0
+    else:
+        df_XX['Categorical_BMI_Obese'] = 1.0
     
-    results = []
-    for Team, PPG, APG, RPG in teams:
-        team_dict = {}
-        team_dict["Team"] = Team
-        team_dict["PPG"] = PPG
-        team_dict["APG"] = APG
-        team_dict["RPG"] = RPG
-        results.append(team_dict)
+    feat_age = int( request.form[ 'age'])
+    print( "Feat age:", feat_age )
+    df_XX['Age'] = feat_age
+
+    feat_gender = f"Gender_{request.form['gender']}"
+    print("Feat Gen:",feat_gender)
+    df_XX[ feat_gender ] = 1.0
+
+    feat_education = f"Education_{request.form['education']}"
+    print("Feat Edu:",feat_education)
+    df_XX[ feat_education ] = 1.0
+
+    feat_race = f"Race_{request.form['race']}"
+    print("Feat Race:", feat_race)
+    df_XX[ feat_race ] = 1.0
+
+    feat_hhincome = float( request.form['income'] )
+    print( "Feat_hhincome:", feat_hhincome)
+
+    feat_hhsize = int( request.form['size'] )
+    print( "Feat_hhsize:", feat_hhsize)
+
+    ratio = feat_hhincome / (15000 * feat_hhsize)
+    print( "Feat_ratio:", ratio)
+    df_XX[ 'Poverty_Ratio' ] = ratio
+
+    print( df_XX )
+    print( df_XX.columns )
+
+    prediction = model.predict_proba( df_XX )
+    print("prediction",prediction)
     
-    return jsonify(results)
+    output = np.round(prediction[0][1], 2)
 
-#  player scores route
-@app.route("/player_scores")
-@cross_origin()
-def get_player_scores():
-    # Query the Player_score_table and return the results as JSON
-    
-    session = Session(engine)
-    player_scores = session.query(Player_score_table.Player, Player_score_table.Year, Player_score_table.GP, Player_score_table.GS, Player_score_table.AST, Player_score_table.PTS, Player_score_table.TRB).all()
-    session.close()
+    print( 'You are likely: {}'.format(output) )
 
-    results = []
-    for Player, Year, GP, GS, AST,PTS, TRB in player_scores:
-        player_score_dict = {}
-        player_score_dict["Player"] = Player
-        player_score_dict["Year"] = Year
-        player_score_dict["GP"] = GP
-        player_score_dict["GS"] = GS
-        player_score_dict["AST"]= AST
-        player_score_dict["PTS"]= PTS
-        player_score_dict["TRB"]= TRB
+    if output > (.65):
+        page = "sad.html"
+    else:
+        page = "happy.html"
+    return render_template(page, prediction_text='Probability: {}'.format(output))
 
-        results.append(player_score_dict)
-    
-    return jsonify(results)
-
-
-# player info route
-
-@app.route("/player_info")
-@cross_origin()
-def get_player_info():
-    # Query the player info table and return the results as JSON
-    
-    session = Session(engine)
-    player_info = session.query(Player_info_table.Player, 
-                                Player_info_table.Current_team, 
-                                Player_info_table.Age, 
-                                Player_info_table.Height,
-                                Player_info_table.Weight,
-                                Player_info_table.NBA_status,
-                                Player_info_table.Draft_entry).all()
-    session.close()
-
-    results = []
-    for Player, Current_team, Age, Height, Weight, NBA_status, Draft_entry in player_info:
-        player_info_dict = {}
-        player_info_dict["Player"] = Player
-        player_info_dict["Current_team"] = Current_team
-        player_info_dict["Age"] = Age
-        player_info_dict["Height"] = Height
-        player_info_dict["Weight"] = Weight
-        player_info_dict["NBA Status"] = NBA_status
-        player_info_dict["Draft Entry"] = Draft_entry
-        results.append(player_info_dict)
-    
-    return jsonify(results)
-
-
-if __name__ == "__main__":
+# start the flask server
+if __name__ == '__main__':
     app.run(debug=True)
