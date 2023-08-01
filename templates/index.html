@@ -1,100 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <title>NBA Stats Dashboard</title>
-    
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css" />
-
+    <title>Loan Approval Predictor</title>
 </head>
-
 <body>
+    <h1>Loan Approval Predictor</h1>
+    <form action="/predict" method="post">
+        <!-- Applicant's Income -->
+        <label for="ApplicantIncome">Applicant's Income:</label>
+        <input type="number" id="ApplicantIncome" name="ApplicantIncome" required><br>
 
-    <nav  class="main-nav"> 
-        <ul class="main-logo-items"> 
-                <img class="link-logo" src="../img/nba-logo.png" alt="">
-                <h1 class="main-logo"> NBA Statistics Dashboard</h1>     
-        </ul>
-    </nav>
+        <!-- Co-Applicant's Income -->
+        <label for="CoapplicantIncome">Co-Applicant's Income:</label>
+        <input type="number" id="CoapplicantIncome" name="CoapplicantIncome" required><br>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 jumbotron text-center">
-        
-            <h2>NBA Dashboard</h2>
-            <h6> This dashboard allows users to explosure the historical performance of various NBA teams and gain insights into the players associated with each team.</h6>
-             <p>Change the dropdown below to update the plots</p>
-    
-             <select id="selDataset" onchange=" updateCharts(this.value)">
-              {% for select_team in team_names -%}
-             <option>{{ select_team }}</option>
-                 {% endfor %}
-              </select>
-            
-    
-            </div>
-        </div>
+        <!-- Loan Amount -->
+        <label for="LoanAmount">Loan Amount:</label>
+        <input type="number" id="LoanAmount" name="LoanAmount" required><br>
 
-        
-        <div class="row">
-            <div class="col-sm-6">
-                <div id="teamBarChart"></div>
-                </div>
+        <!-- Loan Amount Term -->
+        <label for="Loan_Amount_Term">Loan Amount Term:</label>
+        <input type="number" id="Loan_Amount_Term" name="Loan_Amount_Term" required><br>
 
-            <div class="col-sm-12">
-                <canvas id="playerPieChart" style="width: 800px;"></div>
-                </div>
-              </div>
-          
-              <div class="row">
-                <div class="col-sm-12">
-                  <div id="map"></div>
-            </div>
-        </div>
+        <!-- Credit History -->
+        <label for="Credit_History">Credit History (0 or 1):</label>
+        <input type="number" id="Credit_History" name="Credit_History" required><br>
 
+        <!-- Loan Status (0 or 1) -->
+        <label for="Loan_Status">Loan Status (0 for Not Approved, 1 for Approved):</label>
+        <input type="number" id="Loan_Status" name="Loan_Status" required><br>
 
+        <!-- Gender -->
+        <label for="Gender">Gender (0 for Female, 1 for Male):</label>
+        <input type="number" id="Gender" name="Gender" required><br>
 
-    <h4>Data Sources:</h4>
-        <ul>
-            <li>
-                <p>https://basketball.realgm.com/nba/stats/</p>
-            </li>
-            <li>
-                <p>https://basketball.realgm.com/nba/team-stats/</p>
-            </li>
-        </ul>
+        <!-- Married -->
+        <label for="Married">Married (0 for No, 1 for Yes):</label>
+        <input type="number" id="Married" name="Married" required><br>
 
-    <h4>Accessing the NBA Stats API</h4>
-    <p>The following endpoints are available to access data:</p>
-    <ul>
-        <li>
-            <a href="https://nbadashboardproject.azurewebsites.net/teams">/api/teams</a>
-            <p>Return a list of all NBA Teams</p>
-        </li>
-        <li>
-            <a href="https://nbadashboardproject.azurewebsites.net/player_info">/api/player_info</a>
-            <p>Return a list of player data</p>
-        </li>
-        <li>
-            <a href="https://nbadashboardproject.azurewebsites.net/player_scores">/api/player_scores</a>
-            <p>Return a list of player scores across a number of years</p>
-        </li>
-    </ul>
+        <!-- Dependents -->
+        <label for="Dependents">Dependents (0, 1, 2, or 3+):</label>
+        <input type="number" id="Dependents" name="Dependents" required><br>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-    <script src="../static/js/nbamap.js?v=1"></script>
-    <script src="../static/js/Team.js"></script>
-    <script src="../static/js/score.js"></script>
+        <!-- Education -->
+        <label for="Education">Education (0 for Graduate, 1 for Not Graduate):</label>
+        <input type="number" id="Education" name="Education" required><br>
 
-    
+        <!-- Self Employed -->
+        <label for="Self_Employed">Self Employed (0 for No, 1 for Yes):</label>
+        <input type="number" id="Self_Employed" name="Self_Employed" required><br>
+
+        <!-- Property Area -->
+        <label for="Property_Area">Property Area (0 for Rural, 1 for Semiurban, 2 for Urban):</label>
+        <input type="number" id="Property_Area" name="Property_Area" required><br>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Predict Loan Approval">
+    </form>
 </body>
 </html>

@@ -35,6 +35,11 @@ app = Flask(__name__)
 model = pickle.load(open('logistic_regression.pkl', 'rb'))
 
 # define the app route for the default page of the web-app
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+# define the app route for the default page of the web-app
 @app.route('/predict', methods=['POST'])
 def predict():
 
