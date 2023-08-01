@@ -1,111 +1,103 @@
-# import libraris
+# import dependencies
 import pandas as pd
+
 import numpy as np
 from flask import Flask, render_template, request
 import pickle
 
-## col names for df
-col_names = ['ApplicantIncome', 
-             'CoapplicantIncome', 
-             'LoanAmount',
-             'Loan_Amount_Term', 
-             'Credit_History', 
-             'Loan_Status', 
-             'Gender_Female',
-             'Gender_Male', 
-             'Married_No', 
-             'Married_Yes', 
-             'Dependents_0',
-             'Dependents_1', 
-             'Dependents_2', 
-             'Dependents_3+', 
-             'Education_Graduate',
-             'Education_Not Graduate', 
-             'Self_Employed_No', 
-             'Self_Employed_Yes',
-             'Property_Area_Rural', 
-             'Property_Area_Semiurban',
-             'Property_Area_Urban']
-
+# col names for df
+input_fields = ["Gender",
+                "Married",
+                "Dependents",
+                "Education", 
+                "Self_Employed",
+                "ApplicantIncome",
+                "CoapplicantIncome",
+                "LoanAmount",
+                "Loan_Amount_Term",
+                "Credit_History",
+                "Property_Area"]
 
 # initialzie the flask app
 app = Flask(__name__)
 
-# load ml model
+# load logistic regression model
 model = pickle.load(open('logistic_regression.pkl', 'rb'))
 
-# define the app route for the default page of the web-app
+# define the app 
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# define the app route for the default page of the web-app
+# to use the predict button in our web-app
 @app.route('/predict', methods=['POST'])
 def predict():
 
-    X = np.zeros( len(col_names) )
+    ## Input variables
+
+    X = np.zeros(len(input_fields))
     print("X",X)
-    df_XX = pd.DataFrame(data=[dict(zip(col_names, X) ) ] )
+    predictions_df = pd.DataFrame(data=[dict(zip(input_fields, X))])
+   
+    gender_input = request.form['Gender']
+    print("Gender:", gender_input)
+    predictions_df['Gender'] = gender_input
 
-    # for rending result on html GUI
+    married_input = request.form['Married']
+    print("Marital Status:", married_input)
+    predictions_df['Married'] = married_input
 
-    feat_ApplicantIncome = int( request.form['ApplicantIncome'] )
-    print( "ApplicantIncome:", feat_ApplicantIncome )
-    df_XX['ApplicantIncome'] = feat_ApplicantIncome
+    dependents_input = request.form['Dependents']
+    print("Dependents:", dependents_input)
+    predictions_df['Dependents'] = dependents_input
 
-    feat_CoapplicantIncome = int( request.form['CoapplicantIncome'] )
-    print( "CoapplicantIncome:", feat_CoapplicantIncome )
-    df_XX['CoapplicantIncome'] = feat_CoapplicantIncome
+    education_input = request.form['Education']
+    print("Education:", education_input)
+    predictions_df['Education'] = education_input
 
-    feat_loanAmount = int( request.form['LoanAmount'] )
-    print( "LoanAmount:", feat_loanAmount )
-    df_XX['LoanAmount'] = feat_loanAmount 
+    self_employed_input = request.form['Self_Employed']
+    print("Self Employed:", self_employed_input)
+    predictions_df['Self_Employed'] = self_employed_input
 
-    feat_loan_amount_term = int( request.form['Loan_Amount_Term'] )
-    print( "Loan_Amount_Term:", feat_loan_amount_term )
-    df_XX['Loan_Amount_Term'] = feat_loan_amount_term
+    applicant_income_input = request.form['ApplicantIncome']
+    print("Applicant Income:", applicant_income_input)
+    predictions_df['ApplicantIncome'] = applicant_income_input
 
-    feat_credit_history = int( request.form['Credit_History'] )
-    print( "Credit_History:", feat_credit_history )
-    df_XX['Credit_History'] = feat_credit_history
+    co_applicant_income_input = request.form['CoapplicantIncome']
+    print("Co-Applicant Income:", co_applicant_income_input)
+    predictions_df['CoapplicantIncome'] = co_applicant_income_input
 
-    feat_loan_Status = int( request.form['Loan_Status'] )
-    print( "Loan_Status:", feat_loan_Status )
-    df_XX['Loan_Status'] = feat_loan_Status
+    loan_amount_input = request.form['LoanAmount']
+    print("Gender:", loan_amount_input)
+    predictions_df['LoanAmount'] = loan_amount_input
 
-    feat_gender = int(request.form ['Gender'])
-    print ("gender:",feat_gender)
-    df_XX[feat_gender] = 1.0
+    loan_amount_term_input = request.form['Loan_Amount_Term']
+    print("Loan Term:", loan_amount_term_input)
+    predictions_df['Loan_Amount_Term'] = loan_amount_term_input
 
-    feat_married = int(request.form ['Married'])
-    print ("married:",feat_married)
-    df_XX[feat_married] = 1.0
+    credit_history_input = request.form['Credit_History']
+    print("Credit History:", credit_history_input)
+    predictions_df['Credit_History'] = credit_history_input
 
-    feat_dependents = int(request.form ['Dependents'])
-    print ("dependents:",feat_dependents)
-    df_XX[feat_dependents] = 1.0
-    
-    feat_education = int(request.form ['Education'])
-    print ("education:",feat_education)
-    df_XX[feat_education] = 1.0
+    property_area_input = request.form['Property_Area']
+    print("Gender:", property_area_input)
+    predictions_df['Property_Area'] = property_area_input
 
-    feat_self_employed = int(request.form ['Self_Employed'])
-    print ("self_employed:",feat_self_employed)
-    df_XX[feat_self_employed] = 1.0
+    ## Make prediction
 
-    feat_property_area = int(request.form ['Property_Area'])
-    print ("property_area:",feat_property_area)
-    df_XX[feat_property_area] = 1.0
-
-    prediction = model.predict_proba(df_XX)
+    prediction = model.predict_proba(predictions_df)
     print("prediction",prediction)
-
+    
     output = np.round(prediction[0][1], 2)
-    print('Your Loan Status is: {}'.format(output))
-    
 
-    return render_template('index.html', prediction_text='Your Loan Status is: {}'.format(output))
-    
+    print('You are likely: {}'.format(output))
+
+    if output > (.60):
+        page = "reject.html"
+    else:
+        page = "approve.html"
+    return render_template(page, prediction_text='Probability: {}'.format(output))
 
 # start the flask server
 if __name__ == '__main__':
