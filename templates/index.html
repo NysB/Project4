@@ -11,91 +11,160 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
 
+    <style>
+        body {
+            background-color: #f8f8f8;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .main-logo {
+            font-size: 24px;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
-
-    <nav class="main-nav"> 
-        <ul> <h1 class="main-logo">Home Loan Approval Predictor App</h1>
+    <nav class="main-nav">
+        <ul>
+            <h1 class="main-logo">Home Loan Approval Predictor App</h1>
         </ul>
     </nav>
-          
+
     <hr class="star-dark mb-5" />
-        <h3> Please input the following information, to predict your chance of securing a home loan.  
-        </h3>
-        
+    <h3> Please input the following information to predict your chance of securing a home loan. </h3>
+
+    <div class="form-container">
         <form action="{{ url_for('predict')}}" method="post">
+            <div class="form-group">
+                <label for="Gender" class="form-label">Select Gender:</label>
+                <select name="Gender" id="Gender" class="form-control">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
 
-            <label for="Gender">Select Gender:</label><br>
-            <select name="Gender" id="Gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="Married" class="form-label">Are you married:</label>
+                <select name="Married" id="Married" class="form-control">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select>
+            </div>
 
-            <label for="Married">Are you married:</label><br>
-            <select name="Married" id="Married">
-                <option value="Y">Yes</option>
-                <option value="N">No</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="Dependents" class="form-label">Number of dependents:</label>
+                <select name="Dependents" id="Dependents" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3+">3+</option>
+                </select>
+            </div>
 
-            <label for="Dependents">What are the number of dependents:</label><br>
-            <select name="Dependents" id="Dependents">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3+">3+</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="Education" class="form-label">Level of education:</label>
+                <select name="Education" id="Education" class="form-control">
+                    <option value="Graduate">Graduate</option>
+                    <option value="Not Graduate">Not Graduate</option>
+                </select>
+            </div>
 
-            <label for="Education">What is your level of education:</label><br>
-            <select name="Education" id="Education">
-                <option value="Graduate">Graduate</option>
-                <option value="Not Graduate">Not Graduate</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="Self_Employed" class="form-label">Are you self-employed:</label>
+                <select name="Self_Employed" id="Self_Employed" class="form-control">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
 
-            <label for="Self_Employed">Are you self-employed:</label><br>
-            <select name="Self_Employed" id="Self_Employed">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="ApplicantIncome" class="form-label">Applicant income:</label>
+                <input name="ApplicantIncome" type="text" id="ApplicantIncome" class="form-control">
+            </div>
 
-            <label for="ApplicantIncome">What is the applicant income:</label><br>
-            <input name="ApplicantIncome" type="text" id="ApplicantIncome" class="form-control-sm"><br><br>
-            
-            <label for="CoapplicantIncome">What is the co-applicant income:</label><br>
-            <input name="CoapplicantIncome" type="float" id="CoapplicantIncome" class="form-control-sm"><br><br>
+            <div class="form-group">
+                <label for="CoapplicantIncome" class="form-label">Co-applicant income:</label>
+                <input name="CoapplicantIncome" type="float" id="CoapplicantIncome" class="form-control">
+            </div>
 
-            <label for="LoanAmount">What is the loan amount:</label><br>
-            <input name="LoanAmount" type="text" id="LoanAmount" class="form-control-sm"><br><br>
+            <div class="form-group">
+                <label for="LoanAmount" class="form-label">Loan amount:</label>
+                <input name="LoanAmount" type="text" id="LoanAmount" class="form-control">
+            </div>
 
-            <label for="Loan_Amount_Term">What is the loan term:</label><br>
-            <select name="Loan_Amount_Term" id="Loan_Amount_Term">
-                <option value="12">1 year</option>
-                <option value="36">3 years</option>
-                <option value="60">5 years</option>
-                <option value="84">7 years</option>
-                <option value="120">10 years</option>
-                <option value="180">15 years</option>
-                <option value="240">20 years</option>
-                <option value="300">25 years</option>
-                <option value="360">30 years</option>
-                <option value="480">40 years</option>
-            </select><br><br>
-            
-            <label for="Credit_History">How many years of credit history can you provide:</label><br>
-            <select name="Credit_History" id="Credit_History">
-                <option value="0">0 years</option>
-                <option value="1">1 year</option>
-            </select><br><br>
-        
-            <label for="Property_Area">Select property area:</label><br>
-            <select name="Property_Area" id="Property_Area">
-                <option value="Urban">Urban</option>
-                <option value="Semiurban">Semi-Urban</option>
-                <option value="Rural">Rural</option>
-            </select><br><br>
+            <div class="form-group">
+                <label for="Loan_Amount_Term" class="form-label">Loan term:</label>
+                <select name="Loan_Amount_Term" id="Loan_Amount_Term" class="form-control">
+                    <option value="12">1 year</option>
+                    <option value="36">3 years</option>
+                    <option value="60">5 years</option>
+                    <option value="84">7 years</option>
+                    <option value="120">10 years</option>
+                    <option value="180">15 years</option>
+                    <option value="240">20 years</option>
+                    <option value="300">25 years</option>
+                    <option value="360">30 years</option>
+                    <option value="480">40 years</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn">Predict</button>
+            <div class="form-group">
+                <label for="Credit_History" class="form-label">Years of credit history:</label>
+                <select name="Credit_History" id="Credit_History" class="form-control">
+                    <option value="0">0 years</option>
+                    <option value="1">1 year</option>
+                </select>
+            </div>
 
+            <div class="form-group">
+                <label for="Property_Area" class="form-label">Select property area:</label>
+                <select name="Property_Area" id="Property_Area" class="form-control">
+                    <option value="Urban">Urban</option>
+                    <option value="Semiurban">Semi-Urban</option>
+                    <option value="Rural">Rural</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Predict</button>
         </form>
-                        
+    </div>
 </body>
 </html>
