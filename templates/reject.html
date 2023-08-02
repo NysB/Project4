@@ -1,5 +1,61 @@
-<div class="login">
-    <hi>Your result</h1>
-        <h3> Unfortunately, our prediction indicates that you will most likely not get approved</h3>
-        {{ prediction_text }}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Loan Approval Prediction</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .login {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .result-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .probability {
+            font-size: 24px;
+            font-weight: bold;
+            color: #a72c28;
+        }
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <div class="logo">Home Loan Approval Prediction</div>
+        <div class="result-text">Unfortunately, our prediction indicates that you will most likely not get approved.</div>
+        <div class="probability">{{ prediction_text }}</div>
+        <button class="button" onclick="window.location.href='/';">Predict Again</button>
+    </div>
+</body>
+</html>
