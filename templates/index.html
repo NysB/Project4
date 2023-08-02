@@ -7,12 +7,8 @@
     
     <title>Home Loan Approval Prediction</title>
     
-    <!-- <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css"> -->
     <link rel="stylesheet" href="/static/css/style.css" />
-    
 </head>
-
-
     <link rel="confetti" href="https://cdn.skypack.dev/bootstrap@next/dist/css/bootstrap.min.css" />
 
 
@@ -30,8 +26,6 @@
         body {
             margin: 0;
             background-color: #f7fafcf4;
-            
-
         }
 
         .header {
@@ -43,38 +37,8 @@
         height: 380px;
         margin-bottom: -1%;
         color: white;
-        
-        
+        display: block;
         }
-
-    .header h1 {
-        font-size: 50px;
-        margin-top: 0px;
-        font-style: italic;
-        text-decoration-color: rgb(16, 15, 15);
-        height: 200px;
-        text-align:center;
-        margin-left: 32%;
-        margin-right: 0%;
-    }
-/* 
-        .h2 {
-            font-size: 19px;
-            margin-top: 0px;
-            margin-bottom: 15px;
-            font-style: italic;
-            
-            text-decoration-color: rgb(16, 15, 15);
-            
-            text-decoration-line: underline ;
-
-            height: 10px;
-            text-align:start;
-            margin-left: 32%;
-            margin-right: 0%;
-        }  */
-
-
 
         .form-container {
             max-width: 830px;
@@ -152,10 +116,6 @@
     </div>  -->
 
     
-
-
-
-
 
     <div class="form-container">
         <form action="{{ url_for('predict')}}" method="post">
