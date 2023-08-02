@@ -1,5 +1,5 @@
 /* Global styles */
-html, body, header, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
+html, body, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
   margin: 0;
   padding: 0;
   border: 0;
@@ -9,6 +9,13 @@ html, body, header, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
   background: transparent;
   font-family: inherit;
 }
+
+
+
+
+
+
+
 
 
 /* Form container styles */
