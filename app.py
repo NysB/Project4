@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 # load logistic regression model
 model = pickle.load(open('logistic_regression.pkl', 'rb'))
+x_scaler = pickle.load(open('x_scaler.pkl', 'rb'))
 
 # define the app 
 
@@ -23,15 +24,15 @@ def predict():
 
     ## Input variables
    
-    applicant_income_input = request.form['ApplicantIncome']
+    applicant_income_input = float(request.form['ApplicantIncome'])
 
-    co_applicant_income_input = request.form['CoapplicantIncome']
+    co_applicant_income_input = float(request.form['CoapplicantIncome'])
 
-    loan_amount_input = request.form['LoanAmount']
+    loan_amount_input = float(request.form['LoanAmount'])
 
-    loan_amount_term_input = request.form['Loan_Amount_Term']
+    loan_amount_term_input = float(request.form['Loan_Amount_Term'])
 
-    credit_history_input = request.form['Credit_History']
+    credit_history_input = float(request.form['Credit_History'])
 
     gender_input = request.form['Gender']
 
@@ -107,41 +108,47 @@ def predict():
         property_area_semiurban = 0
         property_area_urban = 0
     
-    predictions_df = pd.DataFrame({"ApplicantIncome": applicant_income_input,
-                                   "CoapplicantIncome": co_applicant_income_input,
-                                   "LoanAmount": loan_amount_input,
-                                   "Loan_Amount_Term": loan_amount_term_input,
-                                   "Credit_History": credit_history_input,
-                                   "Gender_Female": gender_female,
-                                   "Gender_Male": gender_male,
-                                   "Married_No": married_no,
-                                   "Married_Yes": married_yes,
-                                   "Dependents_0": dependents_0,
-                                   "Dependents_1": dependents_1,
-                                   "Dependents_2": dependents_2,
-                                   "Dependents_3+": dependents_3,
-                                   "Education_Graduate": education_graduate,
-                                   "Education_Not Graduate": education_not_graduate,
-                                   "Self_Employed_No": self_employed_no,
-                                   "Self_Employed_Yes": self_employed_yes,
-                                   "Property_Area_Rural": property_area_rural,
-                                   "Property_Area_Semiurban": property_area_semiurban,
-                                   "Property_Area_Urban": property_area_urban})
+    predictions_df = pd.DataFrame({"ApplicantIncome": [applicant_income_input],
+                                   "CoapplicantIncome": [co_applicant_income_input],
+                                   "LoanAmount": [loan_amount_input],
+                                   "Loan_Amount_Term": [loan_amount_term_input],
+                                   "Credit_History": [credit_history_input],
+                                   "Gender_Female": [gender_female],
+                                   "Gender_Male": [gender_male],
+                                   "Married_No": [married_no],
+                                   "Married_Yes": [married_yes],
+                                   "Dependents_0": [dependents_0],
+                                   "Dependents_1": [dependents_1],
+                                   "Dependents_2": [dependents_2],
+                                   "Dependents_3+": [dependents_3],
+                                   "Education_Graduate": [education_graduate],
+                                   "Education_Not Graduate": [education_not_graduate],
+                                   "Self_Employed_No": [self_employed_no],
+                                   "Self_Employed_Yes": [self_employed_yes],
+                                   "Property_Area_Rural": [property_area_rural],
+                                   "Property_Area_Semiurban": [property_area_semiurban],
+                                   "Property_Area_Urban": [property_area_urban]})
+
+
+    ## Scale the input data
+
+    x_test_scaled = x_scaler.transform(predictions_df)
 
     ## Make prediction
 
-    prediction = model.predict_proba(predictions_df)
-    print("prediction",prediction)
-    
-    output = np.round(prediction[0][1], 2)
+    prediction = model.predict_proba(x_test_scaled)
+    probability_of_approval = prediction[0][1]
 
-    print('You are likely: {}'.format(output))
+    ## Format probability
 
-    if output > (.60):
-        page = "reject.html"
+    formatted_probability = "{:.2f}%".format(probability_of_approval * 10000)
+
+    if probability_of_approval > 0.60:
+        prediction_text = 'Probability: {}, Likely: Approved'.format(formatted_probability)
     else:
-        page = "approve.html"
-    return render_template(page, prediction_text='Probability: {}'.format(output))
+        prediction_text = 'Probability: {}, Likely: Rejected'.format(formatted_probability)
+
+    return render_template('result.html', prediction_text=prediction_text)
 
 # start the flask server
 if __name__ == '__main__':
