@@ -15,11 +15,11 @@
             text-align: center;
         }
         .login {
-            max-width: 400px;
+            max-width: 550px;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
             padding: 20px;
         }
         .logo {
@@ -53,7 +53,7 @@
 <body>
     <div class="login">
         <div class="logo">Home Loan Approval Prediction</div>
-        <div class="result-text">Unfortunately, our prediction indicates that you will most likely not get approved.</div>
+        <div class="result-text">Unfortunately, our prediction indicates that you will most likely not get approved. &#128546;</div>
         <div class="probability">{{ prediction_text }}</div>
         <button class="button" onclick="window.location.href='/';">Predict Again</button>
     </div>
