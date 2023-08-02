@@ -14,16 +14,14 @@ html, body, header, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
 
 /* Body styles */
 body {
-  font-size: 16px;
+  /* font-size: 16px;
   line-height: 1.6;
   color: #333;
   background-color: #f8f8f8;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -moz-confetti: normal;
-
-
+  -moz-osx-font-smoothing: grayscale; */
+  margin: 0%;
 }
 
 /* Confetti styles */
@@ -38,7 +36,7 @@ body {
 
 
 /* Main navigation styles */
-.main-nav {
+.header {
   display: flex;
   justify-content: space-between;
   background-color: #1a9fff;
@@ -48,11 +46,16 @@ body {
   color: white;
 }
 
-/* Main logo styles */
-.main-logo {
-  font-weight: 700;
-  font-size: 24px;
-}
+
+/* .h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: rgb(16, 15, 15);
+  text-align: center;
+  font-weight: bold;
+}  */
+
+
 
 /* Form container styles */
 .form-container {
