@@ -141,14 +141,14 @@ def predict():
 
     ## Format probability
 
-    formatted_probability = "{:.2f}%".format(probability_of_approval * 10000)
+    formatted_probability = "{:.2f}%".format(probability_of_approval * 100)
 
     if probability_of_approval > 0.60:
-        prediction_text = 'Probability: {}, Likely: Approved'.format(formatted_probability)
+        page = "approve.html"
     else:
-        prediction_text = 'Probability: {}, Likely: Rejected'.format(formatted_probability)
+        page = "reject.html"
 
-    return render_template('result.html', prediction_text=prediction_text)
+    return render_template(page, prediction_text='Probability: {}'.format(formatted_probability))
 
 # start the flask server
 if __name__ == '__main__':
