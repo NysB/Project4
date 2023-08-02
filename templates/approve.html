@@ -7,19 +7,38 @@
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
+    
+    
+    <link rel="confetti" href="https://cdn.skypack.dev/bootstrap@next/dist/css/bootstrap.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script type="module">
+        import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+        confetti({particleCount: 150, spread: 160, drift: 0, startVelocity: 60,
+            origin: {
+                        x: 0.415,
+                        y: 0.4
+                }});
+    </script> 
+
     <style>
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #ffffff;
             padding: 20px;
             text-align: center;
+            margin-top: 15%;
+
         }
+
         .login {
-            max-width: 400px;
+            max-width: 500px;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
             padding: 20px;
         }
         .logo {
@@ -48,14 +67,18 @@
             text-transform: uppercase;
             margin-top: 20px;
         }
+
     </style>
 </head>
 <body>
+
     <div class="login">
         <div class="logo">Home Loan Approval Prediction</div>
-        <div class="result-text">Congratulations. Our model indicates that you will most likely get approved.</div>
+        <div class="result-text">Congratulations! Our model indicates that you will most likely get approved.</div>
         <div class="probability">{{ prediction_text }}</div>
         <button class="button" onclick="window.location.href='/';">Predict Again</button>
     </div>
+    <div id="confetti"></div>
+
 </body>
 </html>
