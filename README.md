@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The main goal of this project is to create a tool that allows users to input various parameters, such as gender, marital status, dependents, educational level, loan amount, etc. and predict whether they will be approved for a home loan by using Machine Learning models, HTML/CSS, Python Flask_powered API. 
+The main goal of this project is to create a tool that allows users to input various parameters, such as gender, marital status, dependents, educational level, loan amount, etc. and predict whether they will be approved for a home loan. Technologies we use are Machine Learning (ML), HTML/CSS, Python Flask_powered API. 
 
 ## How to use
 
