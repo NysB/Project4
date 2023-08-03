@@ -11,16 +11,16 @@ The main goal of this project is to create a tool that allows users to input var
 
 https://www.kaggle.com/datasets/rishikeshkonapure/home-loan-approval?select=loan_sanction_train.csv. (The dataset contains relevant features that will be essential for training our machine learning mode)
 
-## Team members:
-
-o	Fedorenko Olena
-o	Chen, Xing Ying
-o	Saliaj, Evis
-o	Nys, Brecht
-
 
 ## Machine Learning Model:
 
-Deep Learning model
-Logistic Regression model
-Random ForestvModel
+Deep Learning model <br>
+<br> Logistic Regression model <br>
+<br> Random ForestvModel
+
+## Team members:
+
+ Fedorenko Olena <br>
+<br> Chen, Xing Ying <br>
+<br> Saliaj, Evis <br>
+<br> Nys, Brecht 
