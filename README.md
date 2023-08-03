@@ -16,7 +16,7 @@ https://www.kaggle.com/datasets/rishikeshkonapure/home-loan-approval?select=loan
 
 Deep Learning model <br>
 <br> Logistic Regression model <br>
-<br> Random ForestvModel
+<br> Random Forest Model
 
 ## Team members:
 
