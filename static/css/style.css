@@ -1,5 +1,5 @@
 /* Global styles */
-html, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
+html, footer, div, img, label, a, h2, h3, h4, h5, p {
   margin: 0;
   padding: 0;
   border: 0;
@@ -10,21 +10,6 @@ html, footer, div, img, label, h1, a, h2, h3, h4, h5, p {
   font-family: inherit;
   height: 100%;
 }
-
-
-
-body {
-  background-image: linear-gradient(#1a9fff, #FFFFFF);
-  
-  /*Additional Styling*/
-  
-  font-family: 'Lexend Deca', sans-serif;
-  width: 800px; 
-  margin: auto;
-  padding-top: 30px;
-  color: #2E475D;
-}
-
 
 
 
