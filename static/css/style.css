@@ -59,3 +59,18 @@ html, footer, div, img, label, a, h2, h3, h4, h5, p {
 .mb-5 {
   margin-bottom: 40px;
 }
+
+#ApplicantIncome{
+  width: 95%;
+  height: auto;
+}
+
+#CoapplicantIncome {
+  width: 95%;
+  height: auto;
+}
+
+#LoanAmount{    
+  width: 95%;
+  height: auto;
+}
