@@ -6,6 +6,8 @@ The main goal of this project is to create a tool that allows users to input var
 
 ## How to use
 
+You can simply browse to the following webpage
+homeloanpredictor.azurewebsites.net
 
 ## Data
 
@@ -17,6 +19,8 @@ https://www.kaggle.com/datasets/rishikeshkonapure/home-loan-approval?select=loan
 Deep Learning model <br>
 <br> Logistic Regression model <br>
 <br> Random Forest Model
+
+Ultimately, we have decided to use the Logistic Regression Model, which had an accuracy score of 79.7%. 
 
 ## Team members:
 
