@@ -7,7 +7,8 @@ The main goal of this project is to create a tool that allows users to input var
 ## How to use
 
 You can simply browse to the following webpage
-homeloanpredictor.azurewebsites.net
+
+https://homeloanpredictor.azurewebsites.net
 
 ## Data
 
