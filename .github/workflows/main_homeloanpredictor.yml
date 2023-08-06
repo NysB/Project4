@@ -61,3 +61,4 @@ jobs:
           app-name: 'HomeLoanPredictor'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_011EC8A7624B4374B605A790A8772380 }}
+          images: 
