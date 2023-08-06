@@ -4,9 +4,4 @@ gunicorn
 sqlalchemy
 numpy
 pandas
-sklearn.preprocessing
-sklearn.metrics
-sklearn.model_selection
-sklearn.linear_model
-sklearn.metrics
-pickle
+scikit-learn
