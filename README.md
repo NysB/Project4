@@ -15,13 +15,19 @@ https://homeloanpredictor.azurewebsites.net
 https://www.kaggle.com/datasets/rishikeshkonapure/home-loan-approval?select=loan_sanction_train.csv. (The dataset contains relevant features that will be essential for training our machine learning mode)
 
 
-## Machine Learning Model:
+## Machine Learning Model
 
 Deep Learning model <br>
 <br> Logistic Regression model <br>
 <br> Random Forest Model
 
 Ultimately, we have decided to use the Logistic Regression Model, which had an accuracy score of 79.7%. 
+
+## Presentation
+
+The presentation for this assignment can be found using the following link 
+
+https://1drv.ms/p/s!AsmcKhEqCm-sg3Hxz-MJCbIDYWvE?e=nQGGVN
 
 ## Team members:
 
